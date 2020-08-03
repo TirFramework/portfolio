@@ -1,16 +1,17 @@
 {
     "name": "tir/portfolio",
-    "description": "The Blog system for Tir framework",
+    "description": "The Portfolio system for Tir framework",
     "license": "MIT",
     "authors": [
         {
-            "name": "<Mehrdad Abbasi",
-            "email": "javadabbasi72@gmail.com"
+            "name": "Tirdad Abbasi",
+            "email": "abbasi.tirdad@gmail.com"
         }
     ],
     "require": {
-        "tir/crud": "dev-master",
-        "tir/user": "dev-master"
+        "tir/crud": "*",
+        "cviebrock/eloquent-sluggable": "*"
+
     },
 
     "autoload": {

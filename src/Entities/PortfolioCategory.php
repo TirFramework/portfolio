@@ -3,13 +3,10 @@
 namespace Tir\Portfolio\Entities;
 
 use Cviebrock\EloquentSluggable\Sluggable;
-use Illuminate\Support\Facades\Auth;
 use Tir\Crud\Support\Eloquent\CrudModel;
 use Tir\Crud\Support\Eloquent\Translatable;
-use Tir\Store\Category\Entities\Category;
-use Tir\User\Entities\User;
 
-class Portfolio extends CrudModel
+class PortfolioCategory extends CrudModel
 {
 
     use Translatable, Sluggable;
@@ -20,21 +17,23 @@ class Portfolio extends CrudModel
      *
      * @var string
      */
-    public static $routeName = 'portfolio';
+    public static $routeName = 'portfolioCategory';
+
+    public $table = 'portfolio_categories';
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['slug', 'status','user_id', 'author_id'];
+    protected $fillable = ['slug', 'parent_id', 'images', 'position', 'status', 'user_id'];
 
     /**
      * The attributes that are translatable.
      *
      * @var array
      */
-    public $translatedAttributes = ['title', 'content','summary','images'];
+    public $translatedAttributes = ['name', 'summary', 'description', 'meta'];
 
 
     /**
@@ -43,6 +42,8 @@ class Portfolio extends CrudModel
      * @var array
      */
     protected $with = ['translations'];
+
+    public $timestamps = false;
 
 
     public function sluggable()
@@ -54,6 +55,10 @@ class Portfolio extends CrudModel
         ];
     }
 
+    protected $casts = [
+        'images' => 'array'
+    ];
+
     /**
      * This function return array for validation
      *
@@ -62,9 +67,9 @@ class Portfolio extends CrudModel
     public function getValidation()
     {
         return [
-            'title'   => 'required',
-            'slug'    => 'required',
-            'status'  => 'required',
+            'name'   => 'required',
+            'slug'   => 'required',
+            'status' => 'required',
         ];
     }
 
@@ -83,7 +88,7 @@ class Portfolio extends CrudModel
                 'visible' => 'ce',
                 'tabs'    => [
                     [
-                        'name'    => 'portfolio_information',
+                        'name'    => 'portfolioCategory_information',
                         'type'    => 'tab',
                         'visible' => 'ce',
                         'fields'  => [
@@ -93,14 +98,8 @@ class Portfolio extends CrudModel
                                 'visible' => 'io',
                             ],
                             [
-                                'name'    => 'title',
+                                'name'    => 'name',
                                 'type'    => 'text',
-                                'visible' => 'ice',
-                            ],
-                            [
-                                'name'    => 'author_id',
-                                'type'    => 'relation',
-                                'relation' => ['author', 'last_name'],
                                 'visible' => 'ice',
                             ],
                             [
@@ -109,15 +108,10 @@ class Portfolio extends CrudModel
                                 'visible' => 'ce',
                             ],
                             [
-                                'name' => 'categories',
-                                'type' => 'relationM',
-                                'relation' => ['categories', 'name'],
-                                'visible' => 'ice'
-                            ],
-                            [
-                                'name'    => 'images',
-                                'type'    => 'image',
-                                'visible' => 'ce',
+                                'name'     => 'parent_id',
+                                'type'     => 'relation',
+                                'relation' => ['parent', 'name'],
+                                'visible'  => 'ce',
                             ],
                             [
                                 'name'    => 'summary',
@@ -125,14 +119,9 @@ class Portfolio extends CrudModel
                                 'visible' => 'ce',
                             ],
                             [
-                                'name'    => 'content',
+                                'name'    => 'description',
                                 'type'    => 'textEditor',
                                 'visible' => 'ce',
-                            ],
-                            [
-                                'name'    => 'created_at',
-                                'type'    => 'text',
-                                'visible' => 'i',
                             ],
                             [
                                 'name'    => 'status',
@@ -141,9 +130,47 @@ class Portfolio extends CrudModel
                                               'published'   => trans('portfolio::panel.published'),
                                               'unpublished' => trans('portfolio::panel.unpublished')
                                 ],
-                                'visible' => 'icef',
+                                'visible' => 'cef',
+                            ]
+                        ]
+                    ],
+                    [
+                        'name'    => 'images',
+                        'type'    => 'tab',
+                        'visible' => 'ce',
+                        'fields'  => [
+                            [
+                                'name'    => 'images[header]',
+                                'display' => 'header_image',
+                                'type'    => 'image',
+                                'visible' => 'ce',
                             ],
+                            [
+                                'name'    => 'images[main]',
+                                'display' => 'main_image',
+                                'type'    => 'image',
+                                'visible' => 'ce',
+                            ]
 
+                        ]
+                    ],
+                    [
+                        'name'    => 'meta',
+                        'type'    => 'tab',
+                        'visible' => 'ce',
+                        'fields'  => [
+                            [
+                                'name'    => 'meta[keyword]',
+                                'display' => 'meta_keywords',
+                                'type'    => 'text',
+                                'visible' => 'ce',
+                            ],
+                            [
+                                'name'    => 'meta[description]',
+                                'display' => 'meta_description',
+                                'type'    => 'textarea',
+                                'visible' => 'ce',
+                            ]
 
                         ]
                     ]
@@ -152,26 +179,20 @@ class Portfolio extends CrudModel
         ];
     }
 
-    //
-
-    public function getPublishedAtAttribute($value)
+    //Additional methods //////////////////////////////////////////////////////////////////////////////////////////////
+    public function parent()
     {
-        if( config('app.locale') =='fa' ){
-            return jdate($value)->format('%H:%M %A %d %B %Y');
-        }
+        return $this->belongsTo(PortfolioCategory::class, 'parent_id');
     }
 
-    //Additional methods //////////////////////////////////////////////////////////////////////////////////////////////
+    public function portfolios()
+    {
+        // return PortfolioCategoryTranslation::class;
+        return $this->belongsToMany(Portfolio::class);
+    }
 
 
     //Relations methods ///////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function categories()
-    {
-        return $this->belongsToMany(PortfolioCategory::class);
-    }
 
-    public function author(){
-        return $this->belongsTo(User::class, 'author_id');
-    }
 }

@@ -1,20 +1,48 @@
 <?php
 
 return [
+    'content' => 'محتوا',
+    'blog' => 'بلاگ',
+    'Portfolio' => 'پرتفولیو',
+
     'basic_information' => 'اطلاعات پایه',
-    'menu_information'  => 'اطلاعات منو',
-    'menu'              => 'منو',
-    'menus'             => 'منوها',
-    'new_menu'          => 'منو جدید',
-    'id'                => 'کد',
-    'name'              => 'نام',
+    'postCategory_information'  => 'اطلاعات دسته‌بندی',
+    'postCategory'              => 'دسته‌بندی',
+    'new_postCategory'              => 'دسته‌بندی جدید',
+    'postCategories'             => 'دسته‌بندی‌ها',
+    'id'          => 'کد',
+    'name'                => 'نام',
+    'slug'                => 'نامک',
+    'parent_id' => 'والد',
+    'images' => 'تصویر',
+    'summary' => 'خلاصه',
+    'description' => 'توضیحات',
+    'status' => 'وضعیت',
+    'meta_description' => 'توضیحات متا',
+    'keywords' => 'کیوردها',
+    'select' => 'انتخاب',
+    'draft' => 'پیش‌نویس',
+    'published' => 'منتشر‌ شده',
+    'unpublished' => 'منتشر نشده',
+    'posts' => 'پست‌‌ها',
+    'post' => 'پست',
+    'new_post' => 'پست جدید',
+    'title' => 'عنوان',
+    'author_id' => 'نویسنده',
+    'categories' => 'دسته‌بندی',
+    'created_at' => 'ایجاد شده در',
+    'post_information' => 'اطلاعات پست',
+
+
+
     'action'            => 'عملیات',
     'yes'               => 'بله',
     'no'                => 'خیر',
     'is_active'         => 'فعال',
-    'category'          => 'دسته بندی',
-    'page'              => 'صفحه',
-    'url'               => 'URL'
+
+
+
+    'meta_keywords'         => 'کلمه کلیدی',
 
 
 ];
