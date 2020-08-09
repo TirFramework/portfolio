@@ -35,7 +35,7 @@ class CreatePortfolioCategoriesTable extends Migration
             $table->text('description')->nullable();
             $table->text('meta')->nullable();
 
-            $table->unique(['portfolio_category_id', 'locale']);
+            $table->unique(['portfolio_category_id', 'locale'],'pf_category_translations_pf_category_id_locale_unique');
             $table->foreign('portfolio_category_id')->references('id')->on('portfolio_categories')->onDelete('cascade');
         });
 

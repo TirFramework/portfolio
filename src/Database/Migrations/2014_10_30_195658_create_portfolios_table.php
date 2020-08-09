@@ -21,6 +21,8 @@ class CreatePortfoliosTable extends Migration
             $table->string('slug')->unique();
             $table->integer('position')->nullable();
             $table->enum('status', ['published', 'unpublished','draft'])->default('draft');
+            $table->text('gallery')->nullable();
+            $table->text('images')->nullable();
             $table->boolean('top')->nullable();
             $table->integer('views')->default(0);
             $table->timestamp('published_at')->useCurrent = true;
@@ -34,10 +36,9 @@ class CreatePortfoliosTable extends Migration
             $table->bigInteger('portfolio_id')->unsigned();
             $table->string('title');
             $table->string('locale');
-            $table->text('images')->nullable();
             $table->text('summary')->nullable();
             $table->text('content')->nullable();
-            $table->text('meta_description')->nullable();
+            $table->text('meta')->nullable();
 
             $table->unique(['portfolio_id', 'locale']);
             $table->foreign('portfolio_id')->references('id')->on('portfolios')->onDelete('cascade');

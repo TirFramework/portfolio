@@ -27,15 +27,20 @@ class Portfolio extends CrudModel
      *
      * @var array
      */
-    protected $fillable = ['slug', 'status','user_id', 'author_id'];
+    protected $fillable = ['slug', 'status','user_id', 'author_id','images','gallery'];
 
     /**
      * The attributes that are translatable.
      *
      * @var array
      */
-    public $translatedAttributes = ['title', 'content','summary','images'];
+    public $translatedAttributes = ['title', 'content','summary'];
 
+
+    protected $casts = [
+        'images' => 'array',
+        'gallery' => 'array'
+    ];
 
     /**
      * The relations to eager load on every query.
@@ -95,12 +100,13 @@ class Portfolio extends CrudModel
                             [
                                 'name'    => 'title',
                                 'type'    => 'text',
+                                'validation' => 'required',
                                 'visible' => 'ice',
                             ],
                             [
                                 'name'    => 'author_id',
                                 'type'    => 'relation',
-                                'relation' => ['author', 'last_name'],
+                                'relation' => ['author', 'name'],
                                 'visible' => 'ice',
                             ],
                             [
@@ -113,11 +119,6 @@ class Portfolio extends CrudModel
                                 'type' => 'relationM',
                                 'relation' => ['categories', 'name'],
                                 'visible' => 'ice'
-                            ],
-                            [
-                                'name'    => 'images',
-                                'type'    => 'image',
-                                'visible' => 'ce',
                             ],
                             [
                                 'name'    => 'summary',
@@ -143,10 +144,55 @@ class Portfolio extends CrudModel
                                 ],
                                 'visible' => 'icef',
                             ],
+                        ]
+                    ],
+                    [
+                        'name'    => 'images',
+                        'type'    => 'tab',
+                        'visible' => 'ice',
+                        'fields'  => [
+                            [
+                                'name'    => 'images[intro]',
+                                'display' => 'intro_image',
+                                'type'    => 'image',
+                                'visible' => 'ce',
+                            ],
+                            [
+                                'name'    => 'images[main]',
+                                'display' => 'intro_image',
+                                'type'    => 'image',
+                                'visible' => 'ce',
+                            ],
+                            [
+                                'name'    => 'gallery',
+                                'display' => 'gallery',
+                                'type'    => 'images',
+                                'visible' => 'ce'
+                            ]
+                        ]
+                    ],
 
-
+                    [
+                        'name'    => 'meta',
+                        'type'    => 'tab',
+                        'visible' => 'ce',
+                        'fields'  => [
+                            [
+                                'name'    => 'meta[keyword]',
+                                'display' => 'meta_keywords',
+                                'type'    => 'text',
+                                'visible' => 'ce',
+                            ],
+                            [
+                                'name'    => 'meta[description]',
+                                'display' => 'meta_description',
+                                'type'    => 'textarea',
+                                'visible' => 'ce',
+                            ]
                         ]
                     ]
+
+
                 ]
             ]
         ];

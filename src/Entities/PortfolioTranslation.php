@@ -12,5 +12,10 @@ class PortfolioTranslation extends TranslationModel
      *
      * @var array
      */
-    protected $fillable = ['title','summary','content','images'];
+    protected $fillable = ['title','summary','content','meta'];
+
+    protected $casts = [
+        'meta' => 'array'
+    ];
+
 }
