@@ -130,11 +130,11 @@ class Portfolio extends CrudModel
                                 'type'    => 'textEditor',
                                 'visible' => 'ce',
                             ],
-                            [
-                                'name'    => 'created_at',
-                                'type'    => 'text',
-                                'visible' => 'i',
-                            ],
+                            // [
+                            //     'name'    => 'created_at',
+                            //     'type'    => 'text',
+                            //     'visible' => 'c',
+                            // ],
                             [
                                 'name'    => 'status',
                                 'type'    => 'select',
